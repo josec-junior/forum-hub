@@ -3,7 +3,9 @@ package br.com.alura.forum_hub.domain.topico;
 import br.com.alura.forum_hub.domain.curso.Curso;
 import br.com.alura.forum_hub.domain.resposta.Resposta;
 import br.com.alura.forum_hub.domain.usuario.Usuario;
+import br.com.alura.forum_hub.dtos.TopicoCadastroDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,7 +26,7 @@ public class Topico {
     private LocalDateTime dataCriacao;
 
     @Enumerated(EnumType.STRING)
-    private StatusTopico status = StatusTopico.NAO_RESPONDIDO;
+    private StatusTopico status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "autor_id")
@@ -37,8 +39,16 @@ public class Topico {
     @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL)
     private List<Resposta> respostas;
 
+    public Topico(@Valid TopicoCadastroDTO dados, Usuario autor, Curso curso) {
+        this.titulo = dados.titulo();
+        this.mensagem = dados.mensagem();
+        this.autor = autor;
+        this.curso = curso;
+    }
+
     @PrePersist
     public void prePersist() {
         this.dataCriacao = LocalDateTime.now();
+        this.status = StatusTopico.NAO_RESPONDIDO;
     }
 }
