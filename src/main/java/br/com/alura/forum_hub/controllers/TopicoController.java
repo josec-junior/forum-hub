@@ -60,4 +60,15 @@ public class TopicoController {
         topicoService.atualizarTopico(topico.get(), dados);
         return ResponseEntity.ok(new TopicoListagemDTO(topico.get()));
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deletarTopico(@PathVariable Long id) {
+        var topico = topicoRepository.findById(id);
+        if (topico.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        topicoRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
