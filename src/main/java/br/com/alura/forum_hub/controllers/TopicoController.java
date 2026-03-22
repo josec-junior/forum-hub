@@ -2,6 +2,7 @@ package br.com.alura.forum_hub.controllers;
 
 import br.com.alura.forum_hub.domain.topico.TopicoRepository;
 import br.com.alura.forum_hub.domain.topico.TopicoService;
+import br.com.alura.forum_hub.dtos.TopicoAtualizacaoDTO;
 import br.com.alura.forum_hub.dtos.TopicoCadastroDTO;
 import br.com.alura.forum_hub.dtos.TopicoListagemDTO;
 import jakarta.validation.Valid;
@@ -49,5 +50,14 @@ public class TopicoController {
         return ResponseEntity.ok(new TopicoListagemDTO(topico.get()));
     }
 
-
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizarTopico(@PathVariable Long id, @RequestBody TopicoAtualizacaoDTO dados) {
+        var topico = topicoRepository.findById(id);
+        if (topico.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        topicoService.atualizarTopico(topico.get(), dados);
+        return ResponseEntity.ok(new TopicoListagemDTO(topico.get()));
+    }
 }

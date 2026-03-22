@@ -3,6 +3,7 @@ package br.com.alura.forum_hub.domain.topico;
 import br.com.alura.forum_hub.domain.curso.Curso;
 import br.com.alura.forum_hub.domain.resposta.Resposta;
 import br.com.alura.forum_hub.domain.usuario.Usuario;
+import br.com.alura.forum_hub.dtos.TopicoAtualizacaoDTO;
 import br.com.alura.forum_hub.dtos.TopicoCadastroDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -50,5 +51,15 @@ public class Topico {
     public void prePersist() {
         this.dataCriacao = LocalDateTime.now();
         this.status = StatusTopico.NAO_RESPONDIDO;
+    }
+
+
+    public void atualizarInformacoes(TopicoAtualizacaoDTO topicoAtualizacaoDTO) {
+        if (topicoAtualizacaoDTO.titulo() != null) {
+            this.titulo = topicoAtualizacaoDTO.titulo();
+        }
+        if (topicoAtualizacaoDTO.mensagem() != null) {
+            this.mensagem = topicoAtualizacaoDTO.mensagem();
+        }
     }
 }

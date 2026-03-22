@@ -2,6 +2,7 @@ package br.com.alura.forum_hub.domain.topico;
 
 import br.com.alura.forum_hub.domain.curso.CursoRepository;
 import br.com.alura.forum_hub.domain.usuario.UsuarioRepository;
+import br.com.alura.forum_hub.dtos.TopicoAtualizacaoDTO;
 import br.com.alura.forum_hub.dtos.TopicoCadastroDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class TopicoService {
 
         var topico = new Topico(dados, autor, curso);
         return topicoRepository.save(topico);
+    }
+
+    @Transactional
+    public void atualizarTopico(Topico topico, TopicoAtualizacaoDTO dados) {
+        topico.atualizarInformacoes(dados);
     }
 }
