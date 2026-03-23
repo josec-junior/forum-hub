@@ -31,7 +31,7 @@ public class TopicoController {
 
         var topico = topicoService.cadastrarNovoTopico(dados);
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
-        return ResponseEntity.created(uri).body(topico);
+        return ResponseEntity.created(uri).body(new TopicoListagemDTO(topico));
     }
 
     @GetMapping
